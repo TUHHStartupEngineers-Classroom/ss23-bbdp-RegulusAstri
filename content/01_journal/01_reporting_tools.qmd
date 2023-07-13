@@ -1,0 +1,24 @@
+---
+title: "Tidyverse"
+author: "Tommy Weber"
+---
+
+```{r}
+
+library(tidyverse)
+library(lubridate)
+library(plotly)
+
+bikes_tbl      <- readRDS("../../../bikes_tbl.rds")
+bikeshops_tbl  <- readRDS("../../../bikeshops_tbl.rds")
+orderlines_tbl <- readRDS("../../../orderlines_tbl.rds")
+
+
+bike_orderlines_tbl <- orderlines_tbl %>%
+    left_join(bikes_tbl,     by = c("product_id" = "bike_id")) %>%
+    left_join(bikeshops_tbl, by = c("customer_id" = "bikeshop_id")) %>%
+    mutate(total_price = price_euro * quantity)
+
+source("utility.R")
+
+```

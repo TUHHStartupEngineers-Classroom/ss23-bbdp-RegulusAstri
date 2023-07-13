@@ -1,0 +1,151 @@
+---
+title: "Sales Report"
+author: "Tommy Weber"
+date: "06/19/2023"
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
+  html_document:
+    code_folding: none
+    df_print: paged
+    highlight: tango
+    number_sections: yes
+    theme: flatly
+    toc: yes
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    echo = TRUE,
+    eval = TRUE,
+    message = FALSE,
+    warning = FALSE,
+    dpi = 300,
+    fig.align = "center"
+    )
+```
+
+
+```{r, echo=FALSE}
+library(tidyverse)
+library(lubridate)
+library(plotly)
+
+source("../content/01_journal/utility.R")
+
+# Bike data
+bikes_tbl      <- readRDS("../../bikes_tbl.rds")
+bikeshops_tbl  <- readRDS("../../bikeshops_tbl.rds")
+orderlines_tbl <- readRDS("../../orderlines_tbl.rds")
+
+bike_orderlines_tbl <- orderlines_tbl %>%
+    left_join(bikes_tbl,     by = c("product_id" = "bike_id")) %>%
+    left_join(bikeshops_tbl, by = c("customer_id" = "bikeshop_id")) %>%
+    mutate(total_price = price_euro * quantity)
+
+```
+
+
+\pagebreak
+# Total Sales Charts {.tabset .tabset-fade .tabset-pills}
+
+## Quarterly Sales Trends
+
+```{r, echo=FALSE, out.height="500px", out.width="100%"}
+plot_total_sales(unit = "quarter", date_format = "%B %d, %Y", interactive = FALSE)
+```
+
+\pagebreak
+## Monthly Sales Trends
+
+```{r, echo=FALSE, out.height="500px", out.width="100%"}
+plot_total_sales(unit = "month", date_format = "%B %d, %Y", interactive = FALSE)
+```
+
+\pagebreak
+## Weekly Sales Trends
+
+```{r, echo=FALSE, out.height="500px", out.width="100%"}
+plot_total_sales(unit = "week", date_format = "%B %d, %Y", interactive = FALSE)
+```
+
+\pagebreak
+# Category Sales Charts {.tabset .tabset-fade .tabset-pills}
+
+## Road {.tabset .tabset-fade}
+
+### Quarterly Sales Trends
+
+```{r, echo=FALSE, fig.height=7, out.width="100%"}
+plot_categories(category_1 = "Road",
+                category_2 = "All",
+                unit = "quarter", 
+                date_format = "%B %Y",
+                ncol = 1, scales = "free_y",
+                interactive = FALSE)
+```
+
+\pagebreak
+### Monthly Sales Trends
+
+```{r, echo=FALSE, fig.height=7, out.width="100%"}
+plot_categories(category_1 = "Road",
+                category_2 = "All",
+                unit = "month", 
+                date_format = "%B %Y",
+                ncol = 1, scales = "free_y",
+                interactive = FALSE)
+```
+
+\pagebreak
+### Weekly Sales Trends
+
+```{r, echo=FALSE, fig.height=7, out.width="100%"}
+plot_categories(category_1 = "Road",
+                category_2 = "All",
+                unit = "week", 
+                date_format = "%B %Y",
+                ncol = 1, scales = "free_y",
+                interactive = FALSE)
+```
+
+\pagebreak
+## Mountain {.tabset .tabset-fade}
+
+### Quarterly Sales Trends
+
+```{r, echo=FALSE, fig.height=7, out.width="100%"}
+plot_categories(category_1 = "Mountain",
+                category_2 = "All",
+                unit = "quarter", 
+                date_format = "%B %Y",
+                ncol = 1, scales = "free_y",
+                interactive = FALSE)
+```
+
+\pagebreak
+### Monthly Sales Trends
+
+```{r, echo=FALSE, fig.height=7, out.width="100%"}
+plot_categories(category_1 = "Mountain",
+                category_2 = "All",
+                unit = "month", 
+                date_format = "%B %Y",
+                ncol = 1, scales = "free_y",
+                interactive = FALSE)
+```
+
+\pagebreak
+### Weekly Sales Trends
+
+```{r, echo=FALSE, fig.height=7, out.width="100%"}
+plot_categories(category_1 = "Mountain",
+                category_2 = "All",
+                unit = "week", 
+                date_format = "%B %Y",
+                ncol = 1, scales = "free_y",
+                interactive = FALSE)
+```
+
